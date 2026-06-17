@@ -51,6 +51,20 @@ public class LeaveService {
         );
     }
 
+    public void deleteLeave(Long leaveId) {
+
+        repository.deleteById(leaveId);
+    }
+
+
+    public List<LeaveRequest> getAllLeaves() {
+
+        return repository.findAll();
+    }
+
+
+
+
     public List<LeaveRequest> getLeavesByUserId(
             Long userId
     ) {

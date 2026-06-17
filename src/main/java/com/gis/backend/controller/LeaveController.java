@@ -28,14 +28,22 @@ public class LeaveController {
         );
     }
 
-    @GetMapping
-    public List<LeaveRequest> getLeaves(
-            @RequestParam String role
+
+    @DeleteMapping("/{id}")
+    public void deleteLeave(
+            @PathVariable Long id
     ) {
 
-        return service.getLeavesByRole(
-                role
-        );
+        service.deleteLeave(id);
+    }
+
+
+
+
+    @GetMapping("/all")
+    public List<LeaveRequest> getAllLeaves() {
+
+        return service.getAllLeaves();
     }
 
     @GetMapping("/pending")
