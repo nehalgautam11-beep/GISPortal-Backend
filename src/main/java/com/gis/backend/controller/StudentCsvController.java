@@ -3,6 +3,7 @@ package com.gis.backend.controller;
 import com.gis.backend.service.StudentCsvService;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/students")
@@ -18,18 +19,23 @@ public class StudentCsvController {
     }
 
     @PostMapping("/upload-csv")
-    public String uploadCsv(
-
+    public Map<String, String> uploadCsv(
             @RequestParam("file")
             MultipartFile file
     ) {
 
-        int savedCount =
-                service.uploadCsv(
-                        file
-                );
+        System.out.println("CSV CONTROLLER HIT NEW VERSION");
 
-        return savedCount
-                + " students imported successfully";
+        int savedCount = service.uploadCsv(file);
+
+        return Map.of(
+                "message",
+                savedCount + " students imported successfully"
+        );
     }
+
+
+
+
+
 }

@@ -29,6 +29,7 @@ dependencies {
 	implementation("io.jsonwebtoken:jjwt-impl:0.12.5")
 	implementation("io.jsonwebtoken:jjwt-jackson:0.12.5")
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+	implementation ("com.opencsv:opencsv:5.9")
 	compileOnly("org.projectlombok:lombok")
 	runtimeOnly("org.postgresql:postgresql")
 	annotationProcessor("org.projectlombok:lombok")

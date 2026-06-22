@@ -57,10 +57,22 @@ public class TimetableService {
 
         return repository.findAll().stream()
                 .filter(t ->
+
+                        // Explicit teacher timetable
                         teacherName.equalsIgnoreCase(
                                 t.getTeacherName()
                         )
+
                                 ||
+
+                                // Teachers-only timetable
+                                "TEACHER".equalsIgnoreCase(
+                                        t.getType()
+                                )
+
+                                ||
+
+                                // Class timetable for teacher's classes
                                 teacherClasses.stream()
                                         .anyMatch(cls ->
                                                 isVisibleToClass(
@@ -93,7 +105,17 @@ public class TimetableService {
     private boolean isVisibleToClass(
             Timetable t,
             String className
-    ) {
+    )
+    {
+
+        // Teachers-only timetable should never be visible to students
+        if (
+                "TEACHER".equalsIgnoreCase(
+                        t.getType()
+                )
+        ) {
+            return false;
+        }
 
         String targets = t.getTargetClasses();
 

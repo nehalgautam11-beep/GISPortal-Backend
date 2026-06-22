@@ -16,13 +16,14 @@ public class StudentCsvService {
     public StudentCsvService(
             StudentRepository repository
     ) {
-
         this.repository = repository;
     }
 
     public int uploadCsv(
             MultipartFile file
     ) {
+
+        System.out.println("CSV UPLOAD STARTED");
 
         int count = 0;
 
@@ -36,74 +37,116 @@ public class StudentCsvService {
                     );
 
             String line;
-
             boolean firstRow = true;
 
             while (
-                    (line = reader.readLine())
-                            != null
+                    (line = reader.readLine()) != null
             ) {
+
+                if (
+                        line.trim().isEmpty()
+                ) {
+                    continue;
+                }
+
+                System.out.println("LINE = " + line);
 
                 if (
                         firstRow
                 ) {
 
                     firstRow = false;
+
+                    System.out.println(
+                            "HEADER SKIPPED"
+                    );
+
                     continue;
                 }
 
                 String[] data =
-                        line.split(",");
+                        line.split(",", -1);
+
+
+                System.out.println("CSV API HIT");
+
+                System.out.println(
+                        "COLUMNS = "
+                                + data.length
+                );
+
+                if (
+                        data.length != 13
+                ) {
+
+                    System.out.println(
+                            "INVALID ROW -> "
+                                    + line
+                    );
+
+                    continue;
+                }
 
                 Student student =
                         new Student();
 
                 student.setName(
-                        data[0]
-                );
-
-                student.setFatherName(
-                        data[1]
-                );
-
-                student.setMotherName(
-                        data[2]
-                );
-
-                student.setDob(
-                        data[3]
-                );
-
-                student.setRollNo(
-                        data[4]
+                        data[0].trim()
                 );
 
                 student.setClassName(
-                        data[5]
+                        data[1].trim()
                 );
 
-                student.setAddress(
-                        data[6]
+                student.setRollNo(
+                        data[2].trim()
                 );
 
-                student.setAadharNo(
-                        data[7]
+                student.setUsername(
+                        data[3].trim()
+                );
+
+                student.setPassword(
+                        data[4].trim()
+                );
+
+                student.setFatherName(
+                        data[5].trim()
+                );
+
+                student.setMotherName(
+                        data[6].trim()
+                );
+
+                student.setDob(
+                        data[7].trim()
                 );
 
                 student.setPhone(
-                        data[8]
+                        data[8].trim()
+                );
+
+                student.setAddress(
+                        data[9].trim()
+                );
+
+                student.setAadharNo(
+                        data[10].trim()
                 );
 
                 student.setSsmid(
-                        data[9]
+                        data[11].trim()
                 );
 
                 student.setPenNo(
-                        data[10]
+                        data[12].trim()
                 );
 
-                repository.save(
-                        student
+                repository.save(student);
+
+                System.out.println(
+                        "SAVED = "
+                                + student.getName()
                 );
 
                 count++;
@@ -113,8 +156,17 @@ public class StudentCsvService {
                 Exception e
         ) {
 
+            System.out.println(
+                    "CSV IMPORT ERROR"
+            );
+
             e.printStackTrace();
         }
+
+        System.out.println(
+                "TOTAL IMPORTED = "
+                        + count
+        );
 
         return count;
     }
