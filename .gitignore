@@ -52,3 +52,4 @@ out/
 # Application secrets
 application-prod.properties
 application-prod.yml
+src/main/resources/firebase-service-account.json

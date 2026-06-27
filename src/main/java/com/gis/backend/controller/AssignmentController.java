@@ -15,23 +15,44 @@ public class AssignmentController {
     public AssignmentController(
             AssignmentService service
     ) {
-
         this.service = service;
     }
 
+    // Create homework
     @PostMapping
     public Assignment uploadAssignment(
             @RequestBody Assignment assignment
     ) {
-
-        return service.uploadAssignment(
-                assignment
-        );
+        return service.uploadAssignment(assignment);
     }
 
+    // Admin: all homework
     @GetMapping
     public List<Assignment> getAssignments() {
-
         return service.getAssignments();
+    }
+
+    // Teacher: see only their assigned homework
+    @GetMapping("/teacher")
+    public List<Assignment> getByTeacher(
+            @RequestParam String teacherName
+    ) {
+        return service.getByTeacher(teacherName);
+    }
+
+    // Student: see homework for their class
+    @GetMapping("/class")
+    public List<Assignment> getByClass(
+            @RequestParam String className
+    ) {
+        return service.getByClass(className);
+    }
+
+    // Delete homework by id
+    @DeleteMapping("/{id}")
+    public void deleteAssignment(
+            @PathVariable Long id
+    ) {
+        service.deleteAssignment(id);
     }
 }

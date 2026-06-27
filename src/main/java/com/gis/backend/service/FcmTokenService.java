@@ -13,7 +13,16 @@ public class FcmTokenService {
         this.repository = repository;
     }
 
-    public FcmToken save(FcmToken token) {
+    public FcmToken save(FcmToken request) {
+
+        FcmToken token = repository
+                .findByUsername(request.getUsername())
+                .orElse(new FcmToken());
+
+        token.setUsername(request.getUsername());
+        token.setRole(request.getRole());
+        token.setToken(request.getToken());
+
         return repository.save(token);
     }
 }
