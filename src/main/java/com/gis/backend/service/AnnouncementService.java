@@ -13,12 +13,15 @@ import java.util.stream.Collectors;
 public class AnnouncementService {
 
     private final AnnouncementRepository repository;
+    private final NotificationBroadcastService notificationService;
 
     public AnnouncementService(
-            AnnouncementRepository repository
+            AnnouncementRepository repository,
+            NotificationBroadcastService notificationService
     ) {
 
         this.repository = repository;
+        this.notificationService = notificationService;
     }
 
     public Announcement createAnnouncement(
@@ -29,9 +32,23 @@ public class AnnouncementService {
                 LocalDateTime.now()
         );
 
-        return repository.save(
-                announcement
-        );
+        Announcement saved =
+                repository.save(
+                        announcement
+                );
+
+        try {
+
+            notificationService.broadcastAnnouncement(
+                    saved
+            );
+
+        } catch (Exception e) {
+
+            e.printStackTrace();
+        }
+
+        return saved;
     }
 
     public List<Announcement> getAllAnnouncements() {

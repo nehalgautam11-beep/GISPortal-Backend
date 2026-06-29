@@ -22,6 +22,7 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-security")
 	implementation("org.springframework.boot:spring-boot-starter-validation")
 	implementation("com.google.firebase:firebase-admin:9.4.3")
+	implementation("com.cloudinary:cloudinary-http44:1.39.0")
 	implementation("org.springframework.boot:spring-boot-starter-webmvc")
 	implementation("org.springframework.boot:spring-boot-starter-actuator")
 	implementation("io.jsonwebtoken:jjwt-api:0.11.5")

@@ -11,37 +11,51 @@ import java.util.List;
 public class AssignmentService {
 
     private final AssignmentRepository repository;
+    private final NotificationBroadcastService notificationService;
 
     public AssignmentService(
-            AssignmentRepository repository
+            AssignmentRepository repository,
+            NotificationBroadcastService notificationService
     ) {
         this.repository = repository;
+        this.notificationService = notificationService;
     }
 
-    // Create homework
     public Assignment uploadAssignment(
             Assignment assignment
     ) {
+
         assignment.setUploadDate(LocalDateTime.now());
-        return repository.save(assignment);
+
+        Assignment saved =
+                repository.save(assignment);
+
+        try {
+
+            notificationService.broadcastAssignment(
+                    saved
+            );
+
+        } catch (Exception e) {
+
+            e.printStackTrace();
+        }
+
+        return saved;
     }
 
-    // Admin: all homework
     public List<Assignment> getAssignments() {
         return repository.findAll();
     }
 
-    // Teacher: only their own assigned homework
     public List<Assignment> getByTeacher(String teacherName) {
         return repository.findByTeacherName(teacherName);
     }
 
-    // Student: homework for their class
     public List<Assignment> getByClass(String className) {
         return repository.findByClassName(className);
     }
 
-    // Delete (teacher deletes own; admin deletes any)
     public void deleteAssignment(Long id) {
         repository.deleteById(id);
     }
